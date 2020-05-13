@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BlogSystem.Core</name>
+    </assembly>
+    <members>
+        <member name="M:BlogSystem.Core.Controllers.CategoryController.GetCategoryByUserId(System.Guid)">
+            <summary>
+            查询用户分类
+            </summary>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BlogSystem.Core.Controllers.CategoryController.CreateCategory(System.String)">
+            <summary>
+            新增分类
+            </summary>
+            <param name="categoryName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BlogSystem.Core.Controllers.CategoryController.RemoveCategory(System.Guid)">
+            <summary>
+            删除分类
+            </summary>
+            <param name="categoryId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BlogSystem.Core.Controllers.CategoryController.EditCategory(BlogSystem.Model.ViewModels.EditCategoryViewModel)">
+            <summary>
+            编辑分类
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BlogSystem.Core.Controllers.UserController.Register(BlogSystem.Model.ViewModels.RegisterViewModel)">
+            <summary>
+            用户注册
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BlogSystem.Core.Controllers.UserController.Login(BlogSystem.Model.ViewModels.LoginViewModel)">
+            <summary>
+            用户登录
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BlogSystem.Core.Helpers.JwtHelper.JwtEncrypt(BlogSystem.Core.Helpers.TokenModelJwt)">
+            <summary>
+            Jwt加密
+            </summary>
+            <param name="tokenModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BlogSystem.Core.Helpers.JwtHelper.JwtDecrypt(System.String)">
+            <summary>
+            Jwt解密
+            </summary>
+            <param name="jwtStr"></param>
+            <returns></returns>
+        </member>
+        <member name="T:BlogSystem.Core.Helpers.TokenModelJwt">
+            <summary>
+            令牌包含的信息
+            </summary>
+        </member>
+    </members>
+</doc>

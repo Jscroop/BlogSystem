@@ -1,0 +1,563 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BlogSystem.Model</name>
+    </assembly>
+    <members>
+        <member name="T:BlogSystem.Model.Article">
+            <summary>
+            文章
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.Article.Title">
+            <summary>
+            文章标题
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.Article.Content">
+            <summary>
+            文章内容
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.Article.UserId">
+            <summary>
+            发表人的Id，用户表的外键
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.Article.GoodCount">
+            <summary>
+            看好人数
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.Article.BadCount">
+            <summary>
+            不看好人数
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.Article.Level">
+            <summary>
+            文章查看所需等级
+            </summary>
+        </member>
+        <member name="T:BlogSystem.Model.ArticleComment">
+            <summary>
+            文章评论表
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ArticleComment.ArticleId">
+            <summary>
+            评论的文章ID
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ArticleComment.UserId">
+            <summary>
+            评论用户ID
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ArticleComment.Content">
+            <summary>
+            评论内容
+            </summary>
+        </member>
+        <member name="T:BlogSystem.Model.ArticleInCategory">
+            <summary>
+            文章所属分类
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ArticleInCategory.CategoryId">
+            <summary>
+            分类Id
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ArticleInCategory.ArticleId">
+            <summary>
+            文章Id
+            </summary>
+        </member>
+        <member name="T:BlogSystem.Model.BaseEntity">
+            <summary>
+            model的基类
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.BaseEntity.Id">
+            <summary>
+            唯一标识Id
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.BaseEntity.CreateTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.BaseEntity.IsRemoved">
+            <summary>
+            是否被删除(伪删除)
+            </summary>
+        </member>
+        <member name="T:BlogSystem.Model.Category">
+            <summary>
+            分类
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.Category.CategoryName">
+            <summary>
+            分类名称
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.Category.UserId">
+            <summary>
+            分类对应的用户
+            </summary>
+        </member>
+        <member name="T:BlogSystem.Model.CommentReply">
+            <summary>
+            评论回复表
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.CommentReply.CommentId">
+            <summary>
+            回复指向的评论Id
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.CommentReply.ToUserId">
+            <summary>
+            回复指向的用户Id
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.CommentReply.ArticleId">
+            <summary>
+            文章ID
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.CommentReply.UserId">
+            <summary>
+            用户Id
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.CommentReply.Content">
+            <summary>
+            回复的内容
+            </summary>
+        </member>
+        <member name="T:BlogSystem.Model.Gender">
+            <summary>
+            性别枚举
+            </summary>
+        </member>
+        <member name="T:BlogSystem.Model.Level">
+            <summary>
+            用户等级枚举
+            </summary>
+        </member>
+        <member name="T:BlogSystem.Model.User">
+            <summary>
+            用户
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.User.Account">
+            <summary>
+            账户
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.User.Password">
+            <summary>
+            密码
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.User.ProfilePhoto">
+            <summary>
+            头像
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.User.BirthOfDate">
+            <summary>
+            出生日期
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.User.Gender">
+            <summary>
+            性别
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.User.Level">
+            <summary>
+            用户等级
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.User.FansNum">
+            <summary>
+            粉丝数
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.User.FocusNum">
+            <summary>
+            关注数
+            </summary>
+        </member>
+        <member name="T:BlogSystem.Model.UserFocus">
+            <summary>
+            用户关注表
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.UserFocus.UserId">
+            <summary>
+            用户编号
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.UserFocus.FocusId">
+            <summary>
+            关注用户编号
+            </summary>
+        </member>
+        <member name="T:BlogSystem.Model.ViewModels.ArticleDetailsViewModel">
+            <summary>
+            文章详情
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.ArticleDetailsViewModel.Id">
+            <summary>
+            文章Id
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.ArticleDetailsViewModel.Title">
+            <summary>
+            文章标题
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.ArticleDetailsViewModel.Content">
+            <summary>
+            文章内容
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.ArticleDetailsViewModel.CreateTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.ArticleDetailsViewModel.Account">
+            <summary>
+            作者
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.ArticleDetailsViewModel.ProfilePhoto">
+            <summary>
+            头像
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.ArticleDetailsViewModel.CategoryIds">
+            <summary>
+            分类Id
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.ArticleDetailsViewModel.CategoryNames">
+            <summary>
+            分类名称
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.ArticleDetailsViewModel.GoodCount">
+            <summary>
+            看好人数
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.ArticleDetailsViewModel.BadCount">
+            <summary>
+            不看好人数
+            </summary>
+        </member>
+        <member name="T:BlogSystem.Model.ViewModels.ArticleListViewModel">
+            <summary>
+            文章列表
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.ArticleListViewModel.ArticleId">
+            <summary>
+            文章Id
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.ArticleListViewModel.Title">
+            <summary>
+            文章标题
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.ArticleListViewModel.Content">
+            <summary>
+            文章内容
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.ArticleListViewModel.CreateTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.ArticleListViewModel.Account">
+            <summary>
+            账号
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.ArticleListViewModel.ProfilePhoto">
+            <summary>
+            头像
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.CategoryListViewModel.CategoryId">
+            <summary>
+            分类Id
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.CategoryListViewModel.CategoryName">
+            <summary>
+            分类名称
+            </summary>
+        </member>
+        <member name="T:BlogSystem.Model.ViewModels.ChangePwdViewModel">
+            <summary>
+            修改用户密码
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.ChangePwdViewModel.UserId">
+            <summary>
+            用户Id
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.ChangePwdViewModel.OldPassword">
+            <summary>
+            旧密码
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.ChangePwdViewModel.NewPassword">
+            <summary>
+            新密码
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.ChangePwdViewModel.RequirePassword">
+            <summary>
+            确认新密码
+            </summary>
+        </member>
+        <member name="T:BlogSystem.Model.ViewModels.ChangeUserInfoViewModel">
+            <summary>
+            修改用户资料
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.ChangeUserInfoViewModel.UserId">
+            <summary>
+            用户Id
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.ChangeUserInfoViewModel.Account">
+            <summary>
+            账号
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.ChangeUserInfoViewModel.BirthOfDate">
+            <summary>
+            出生日期
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.ChangeUserInfoViewModel.Gender">
+            <summary>
+            性别
+            </summary>
+        </member>
+        <member name="T:BlogSystem.Model.ViewModels.ChangeUserPhotoViewModel">
+            <summary>
+            修改用户头像
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.ChangeUserPhotoViewModel.UserId">
+            <summary>
+            用户Id
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.ChangeUserPhotoViewModel.ProfilePhoto">
+            <summary>
+            用户头像
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.CommentListViewModel.ArticleId">
+            <summary>
+            文章Id
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.CommentListViewModel.UserId">
+            <summary>
+            用户Id
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.CommentListViewModel.Account">
+            <summary>
+            账号
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.CommentListViewModel.CommentId">
+            <summary>
+            评论Id
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.CommentListViewModel.CommentContent">
+            <summary>
+            评论内容
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.CommentListViewModel.CreateTime">
+            <summary>
+            创建时间
+            </summary>
+        </member>
+        <member name="T:BlogSystem.Model.ViewModels.CreateArticleViewModel">
+            <summary>
+            创建文章
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.CreateArticleViewModel.UserId">
+            <summary>
+            创建用户Id
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.CreateArticleViewModel.Title">
+            <summary>
+            文章标题
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.CreateArticleViewModel.Content">
+            <summary>
+            文章内容
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.CreateArticleViewModel.CategoryIds">
+            <summary>
+            文章分类
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.CreateCategoryViewModel.UserId">
+            <summary>
+            创建用户Id
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.CreateCategoryViewModel.CategoryName">
+            <summary>
+            分类名称
+            </summary>
+        </member>
+        <member name="T:BlogSystem.Model.ViewModels.EditArticleViewModel">
+            <summary>
+            编辑文章
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.EditArticleViewModel.Id">
+            <summary>
+            文章Id
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.EditArticleViewModel.Title">
+            <summary>
+            文章标题
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.EditArticleViewModel.Content">
+            <summary>
+            文章内容
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.EditArticleViewModel.CategoryIds">
+            <summary>
+            文章分类
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.EditCategoryViewModel.UserId">
+            <summary>
+            用户Id
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.EditCategoryViewModel.CategoryId">
+            <summary>
+            分类Id
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.EditCategoryViewModel.CategoryName">
+            <summary>
+            分类名称
+            </summary>
+        </member>
+        <member name="T:BlogSystem.Model.ViewModels.LoginViewModel">
+            <summary>
+            用户登录
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.LoginViewModel.Account">
+            <summary>
+            用户名称
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.LoginViewModel.Password">
+            <summary>
+            用户密码
+            </summary>
+        </member>
+        <member name="T:BlogSystem.Model.ViewModels.RegisterViewModel">
+            <summary>
+            用户注册
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.RegisterViewModel.Account">
+            <summary>
+            账号
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.RegisterViewModel.Password">
+            <summary>
+            密码
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.RegisterViewModel.RequirePassword">
+            <summary>
+            确认密码
+            </summary>
+        </member>
+        <member name="T:BlogSystem.Model.ViewModels.UserDetailsViewModel">
+            <summary>
+            用户详细信息-点击查看主页
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.UserDetailsViewModel.UserId">
+            <summary>
+            用户Id
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.UserDetailsViewModel.Account">
+            <summary>
+            账号
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.UserDetailsViewModel.ProfilePhoto">
+            <summary>
+            头像
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.UserDetailsViewModel.Age">
+            <summary>
+            年龄
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.UserDetailsViewModel.Gender">
+            <summary>
+            性别
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.UserDetailsViewModel.Level">
+            <summary>
+            用户等级
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.UserDetailsViewModel.FansNum">
+            <summary>
+            粉丝数
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.UserDetailsViewModel.FocusNum">
+            <summary>
+            关注数
+            </summary>
+        </member>
+    </members>
+</doc>

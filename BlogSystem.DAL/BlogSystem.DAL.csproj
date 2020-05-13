@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>D:\Code\Visua Studio\core1\BlogSystem\BlogSystem.Core\bin\Debug\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BlogSystem.IDAL\BlogSystem.IDAL.csproj" />
+    <ProjectReference Include="..\BlogSystem.Model\BlogSystem.Model.csproj" />
+  </ItemGroup>
+
+</Project>
