@@ -5,8 +5,8 @@
     /// </summary>
     public enum Gender
     {
-        男 = 0,
-        女 = 1,
-        保密 = 2
+        保密 = 0,
+        男 = 1,
+        女 = 2,
     }
 }

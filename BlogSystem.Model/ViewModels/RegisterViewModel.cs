@@ -19,13 +19,13 @@ namespace BlogSystem.Model.ViewModels
         /// <summary>
         /// 密码
         /// </summary>
-        [Required, Display(Name = "用户密码"), StringLength(20, MinimumLength = 6), DataType(DataType.Password)]
+        [Required, Display(Name = "用户密码"), StringLength(20, MinimumLength = 6)]
         public string Password { get; set; }
 
         /// <summary>
         /// 确认密码
         /// </summary>
-        [Required, Display(Name = "确认密码"), Compare(nameof(Password)),DataType(DataType.Password)]
+        [Required, Display(Name = "确认密码"), Compare(nameof(Password))]
         public string RequirePassword { get; set; }
     }
 }

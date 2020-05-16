@@ -26,7 +26,7 @@ namespace BlogSystem.Model
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             //配置数据库连接
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=BlogSystem;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=BlogSystem;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
         }
 
         public DbSet<Article> Articles { get; set; }

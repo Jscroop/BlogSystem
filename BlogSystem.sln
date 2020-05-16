@@ -3,19 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogSystem.Core", "BlogSystem.Core\BlogSystem.Core.csproj", "{B67518E1-E0C5-4357-8436-66947A03EF6B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogSystem.Core", "BlogSystem.Core\BlogSystem.Core.csproj", "{B67518E1-E0C5-4357-8436-66947A03EF6B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogSystem.Model", "BlogSystem.Model\BlogSystem.Model.csproj", "{FE52A0E6-2FD2-4A5E-B8F0-5E1B9AFE89FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogSystem.Model", "BlogSystem.Model\BlogSystem.Model.csproj", "{FE52A0E6-2FD2-4A5E-B8F0-5E1B9AFE89FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogSystem.IDAL", "BlogSystem.IDAL\BlogSystem.IDAL.csproj", "{7FFFA1B0-0FAE-414B-9BD5-74F1F87F5DF4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogSystem.IDAL", "BlogSystem.IDAL\BlogSystem.IDAL.csproj", "{7FFFA1B0-0FAE-414B-9BD5-74F1F87F5DF4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogSystem.IBLL", "BlogSystem.IBLL\BlogSystem.IBLL.csproj", "{44503C14-243F-4B3B-95DB-E66275729C7B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogSystem.IBLL", "BlogSystem.IBLL\BlogSystem.IBLL.csproj", "{44503C14-243F-4B3B-95DB-E66275729C7B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogSystem.DAL", "BlogSystem.DAL\BlogSystem.DAL.csproj", "{068E734A-0351-4188-AC45-506D6BADC49F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogSystem.DAL", "BlogSystem.DAL\BlogSystem.DAL.csproj", "{068E734A-0351-4188-AC45-506D6BADC49F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogSystem.BLL", "BlogSystem.BLL\BlogSystem.BLL.csproj", "{16398055-6D1A-41A3-AB18-F8F376B94813}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogSystem.BLL", "BlogSystem.BLL\BlogSystem.BLL.csproj", "{16398055-6D1A-41A3-AB18-F8F376B94813}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogSystem.Common", "BlogSystem.Common\BlogSystem.Common.csproj", "{77A1398F-75AA-4B1C-B4F3-9024973699A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogSystem.Common", "BlogSystem.Common\BlogSystem.Common.csproj", "{77A1398F-75AA-4B1C-B4F3-9024973699A8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

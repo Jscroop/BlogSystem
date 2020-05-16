@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace BlogSystem.Model.ViewModels
 {
@@ -8,11 +9,6 @@ namespace BlogSystem.Model.ViewModels
     public class ChangeUserInfoViewModel
     {
         /// <summary>
-        /// 用户Id
-        /// </summary>
-        public Guid UserId { get; set; }
-
-        /// <summary>
         /// 账号
         /// </summary>
         public string Account { get; set; }
@@ -20,6 +16,7 @@ namespace BlogSystem.Model.ViewModels
         /// <summary>
         /// 出生日期
         /// </summary>
+        [DataType(DataType.Date)]
         public DateTime BirthOfDate { get; set; }
 
         /// <summary>

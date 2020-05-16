@@ -12,9 +12,7 @@ namespace BlogSystem.Model
         /// <summary>
         /// 回复指向的评论Id
         /// </summary>
-        [ForeignKey(nameof(ArticleComment))]
         public Guid CommentId { get; set; }
-        public ArticleComment ArticleComment { get; set; }
         /// <summary>
         /// 回复指向的用户Id
         /// </summary>

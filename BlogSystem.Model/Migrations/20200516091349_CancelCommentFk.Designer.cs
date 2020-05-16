@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlogSystem.Model.Migrations
 {
     [DbContext(typeof(BlogSystemContext))]
-    [Migration("20200512083129_InitialTable")]
-    partial class InitialTable
+    [Migration("20200516091349_CancelCommentFk")]
+    partial class CancelCommentFk
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -32,7 +32,7 @@ namespace BlogSystem.Model.Migrations
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreateTime")
                         .HasColumnType("datetime2");
@@ -178,8 +178,6 @@ namespace BlogSystem.Model.Migrations
 
                     b.HasIndex("ArticleId");
 
-                    b.HasIndex("CommentId");
-
                     b.HasIndex("ToUserId");
 
                     b.HasIndex("UserId");
@@ -312,12 +310,6 @@ namespace BlogSystem.Model.Migrations
                     b.HasOne("BlogSystem.Model.Article", "Article")
                         .WithMany()
                         .HasForeignKey("ArticleId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("BlogSystem.Model.ArticleComment", "ArticleComment")
-                        .WithMany()
-                        .HasForeignKey("CommentId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 

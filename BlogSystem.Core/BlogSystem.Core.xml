@@ -4,16 +4,59 @@
         <name>BlogSystem.Core</name>
     </assembly>
     <members>
+        <member name="M:BlogSystem.Core.Controllers.ArticleController.CreateArticle(BlogSystem.Model.ViewModels.CreateArticleViewModel)">
+            <summary>
+            创建文章
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BlogSystem.Core.Controllers.ArticleController.EditArticle(BlogSystem.Model.ViewModels.EditArticleViewModel)">
+            <summary>
+            编辑文章
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BlogSystem.Core.Controllers.ArticleController.RemoveArticle(System.Guid)">
+            <summary>
+            删除文章
+            </summary>
+            <param name="articleId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BlogSystem.Core.Controllers.ArticleController.GetArticleByArticleId(System.Guid)">
+            <summary>
+            通过文章Id获取文章详情
+            </summary>
+            <param name="articleId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BlogSystem.Core.Controllers.ArticleController.GetArticlesByUserId(System.Guid)">
+            <summary>
+            通过用户Id获取文章列表
+            </summary>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BlogSystem.Core.Controllers.ArticleController.GetArticlesByCategoryId(System.Guid,System.Guid)">
+            <summary>
+            通过用户分类Id获取文章列表
+            </summary>
+            <param name="userId"></param>
+            <param name="categoryId"></param>
+            <returns></returns>
+        </member>
         <member name="M:BlogSystem.Core.Controllers.CategoryController.GetCategoryByUserId(System.Guid)">
             <summary>
-            查询用户分类
+            查询用户的文章分类
             </summary>
             <param name="userId"></param>
             <returns></returns>
         </member>
         <member name="M:BlogSystem.Core.Controllers.CategoryController.CreateCategory(System.String)">
             <summary>
-            新增分类
+            新增文章分类
             </summary>
             <param name="categoryName"></param>
             <returns></returns>
@@ -32,6 +75,30 @@
             <param name="model"></param>
             <returns></returns>
         </member>
+        <member name="M:BlogSystem.Core.Controllers.CommentController.CreateComment(System.Guid,BlogSystem.Model.ViewModels.CreateCommentViewModel)">
+            <summary>
+            添加评论
+            </summary>
+            <param name="articleId"></param>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BlogSystem.Core.Controllers.CommentController.CreateReplyComment(System.Guid,System.Guid,BlogSystem.Model.ViewModels.CreateApplyCommentViewModel)">
+            <summary>
+            添加回复型评论
+            </summary>
+            <param name="articleId"></param>
+            <param name="commentId"></param>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BlogSystem.Core.Controllers.CommentController.GetComments(System.Guid)">
+            <summary>
+            获取评论
+            </summary>
+            <param name="articleId"></param>
+            <returns></returns>
+        </member>
         <member name="M:BlogSystem.Core.Controllers.UserController.Register(BlogSystem.Model.ViewModels.RegisterViewModel)">
             <summary>
             用户注册
@@ -42,6 +109,34 @@
         <member name="M:BlogSystem.Core.Controllers.UserController.Login(BlogSystem.Model.ViewModels.LoginViewModel)">
             <summary>
             用户登录
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BlogSystem.Core.Controllers.UserController.UserInfo(System.String)">
+            <summary>
+            获取用户信息
+            </summary>
+            <param name="account"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BlogSystem.Core.Controllers.UserController.ChangePassword(BlogSystem.Model.ViewModels.ChangePwdViewModel)">
+            <summary>
+            修改用户密码
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BlogSystem.Core.Controllers.UserController.ChangeUserPhoto(System.String)">
+            <summary>
+            修改用户照片
+            </summary>
+            <param name="profilePhoto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BlogSystem.Core.Controllers.UserController.ChangeUserInfo(BlogSystem.Model.ViewModels.ChangeUserInfoViewModel)">
+            <summary>
+             修改用户信息
             </summary>
             <param name="model"></param>
             <returns></returns>

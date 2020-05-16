@@ -2,6 +2,9 @@
 
 namespace BlogSystem.Model.ViewModels
 {
+    /// <summary>
+    /// 文章评论列表
+    /// </summary>
     public class CommentListViewModel
     {
         /// <summary>
@@ -18,6 +21,11 @@ namespace BlogSystem.Model.ViewModels
         /// 账号
         /// </summary>
         public string Account { get; set; }
+
+        /// <summary>
+        /// 头像
+        /// </summary>
+        public string ProfilePhoto { get; set; }
 
         /// <summary>
         /// 评论Id

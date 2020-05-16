@@ -299,6 +299,11 @@
             头像
             </summary>
         </member>
+        <member name="T:BlogSystem.Model.ViewModels.CategoryListViewModel">
+            <summary>
+            分类列表
+            </summary>
+        </member>
         <member name="P:BlogSystem.Model.ViewModels.CategoryListViewModel.CategoryId">
             <summary>
             分类Id
@@ -312,11 +317,6 @@
         <member name="T:BlogSystem.Model.ViewModels.ChangePwdViewModel">
             <summary>
             修改用户密码
-            </summary>
-        </member>
-        <member name="P:BlogSystem.Model.ViewModels.ChangePwdViewModel.UserId">
-            <summary>
-            用户Id
             </summary>
         </member>
         <member name="P:BlogSystem.Model.ViewModels.ChangePwdViewModel.OldPassword">
@@ -339,11 +339,6 @@
             修改用户资料
             </summary>
         </member>
-        <member name="P:BlogSystem.Model.ViewModels.ChangeUserInfoViewModel.UserId">
-            <summary>
-            用户Id
-            </summary>
-        </member>
         <member name="P:BlogSystem.Model.ViewModels.ChangeUserInfoViewModel.Account">
             <summary>
             账号
@@ -359,19 +354,9 @@
             性别
             </summary>
         </member>
-        <member name="T:BlogSystem.Model.ViewModels.ChangeUserPhotoViewModel">
+        <member name="T:BlogSystem.Model.ViewModels.CommentListViewModel">
             <summary>
-            修改用户头像
-            </summary>
-        </member>
-        <member name="P:BlogSystem.Model.ViewModels.ChangeUserPhotoViewModel.UserId">
-            <summary>
-            用户Id
-            </summary>
-        </member>
-        <member name="P:BlogSystem.Model.ViewModels.ChangeUserPhotoViewModel.ProfilePhoto">
-            <summary>
-            用户头像
+            文章评论列表
             </summary>
         </member>
         <member name="P:BlogSystem.Model.ViewModels.CommentListViewModel.ArticleId">
@@ -389,6 +374,11 @@
             账号
             </summary>
         </member>
+        <member name="P:BlogSystem.Model.ViewModels.CommentListViewModel.ProfilePhoto">
+            <summary>
+            头像
+            </summary>
+        </member>
         <member name="P:BlogSystem.Model.ViewModels.CommentListViewModel.CommentId">
             <summary>
             评论Id
@@ -404,14 +394,19 @@
             创建时间
             </summary>
         </member>
+        <member name="T:BlogSystem.Model.ViewModels.CreateApplyCommentViewModel">
+            <summary>
+            添加回复型评论
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.CreateApplyCommentViewModel.Content">
+            <summary>
+            回复的内容
+            </summary>
+        </member>
         <member name="T:BlogSystem.Model.ViewModels.CreateArticleViewModel">
             <summary>
             创建文章
-            </summary>
-        </member>
-        <member name="P:BlogSystem.Model.ViewModels.CreateArticleViewModel.UserId">
-            <summary>
-            创建用户Id
             </summary>
         </member>
         <member name="P:BlogSystem.Model.ViewModels.CreateArticleViewModel.Title">
@@ -429,14 +424,29 @@
             文章分类
             </summary>
         </member>
-        <member name="P:BlogSystem.Model.ViewModels.CreateCategoryViewModel.UserId">
+        <member name="T:BlogSystem.Model.ViewModels.CreateCategoryViewModel">
             <summary>
-            创建用户Id
+            创建文章分类
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.CreateCategoryViewModel.CategoryId">
+            <summary>
+            分类Id
             </summary>
         </member>
         <member name="P:BlogSystem.Model.ViewModels.CreateCategoryViewModel.CategoryName">
             <summary>
             分类名称
+            </summary>
+        </member>
+        <member name="T:BlogSystem.Model.ViewModels.CreateCommentViewModel">
+            <summary>
+            文章评论
+            </summary>
+        </member>
+        <member name="P:BlogSystem.Model.ViewModels.CreateCommentViewModel.Content">
+            <summary>
+            评论内容
             </summary>
         </member>
         <member name="T:BlogSystem.Model.ViewModels.EditArticleViewModel">
@@ -464,9 +474,9 @@
             文章分类
             </summary>
         </member>
-        <member name="P:BlogSystem.Model.ViewModels.EditCategoryViewModel.UserId">
+        <member name="T:BlogSystem.Model.ViewModels.EditCategoryViewModel">
             <summary>
-            用户Id
+            编辑分类
             </summary>
         </member>
         <member name="P:BlogSystem.Model.ViewModels.EditCategoryViewModel.CategoryId">
@@ -516,12 +526,7 @@
         </member>
         <member name="T:BlogSystem.Model.ViewModels.UserDetailsViewModel">
             <summary>
-            用户详细信息-点击查看主页
-            </summary>
-        </member>
-        <member name="P:BlogSystem.Model.ViewModels.UserDetailsViewModel.UserId">
-            <summary>
-            用户Id
+            用户详细信息
             </summary>
         </member>
         <member name="P:BlogSystem.Model.ViewModels.UserDetailsViewModel.Account">

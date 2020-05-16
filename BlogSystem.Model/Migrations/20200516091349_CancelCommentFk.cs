@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BlogSystem.Model.Migrations
 {
-    public partial class InitialTable : Migration
+    public partial class CancelCommentFk : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -36,7 +36,7 @@ namespace BlogSystem.Model.Migrations
                     CreateTime = table.Column<DateTime>(nullable: false),
                     IsRemoved = table.Column<bool>(nullable: false),
                     Title = table.Column<string>(nullable: false),
-                    Content = table.Column<string>(type: "text", nullable: false),
+                    Content = table.Column<string>(nullable: false),
                     UserId = table.Column<Guid>(nullable: false),
                     GoodCount = table.Column<int>(nullable: false),
                     BadCount = table.Column<int>(nullable: false),
@@ -130,33 +130,6 @@ namespace BlogSystem.Model.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ArticleInCategories",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    CreateTime = table.Column<DateTime>(nullable: false),
-                    IsRemoved = table.Column<bool>(nullable: false),
-                    CategoryId = table.Column<Guid>(nullable: false),
-                    ArticleId = table.Column<Guid>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ArticleInCategories", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ArticleInCategories_Articles_ArticleId",
-                        column: x => x.ArticleId,
-                        principalTable: "Articles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_ArticleInCategories_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "CommentReplies",
                 columns: table => new
                 {
@@ -179,12 +152,6 @@ namespace BlogSystem.Model.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_CommentReplies_ArticleComments_CommentId",
-                        column: x => x.CommentId,
-                        principalTable: "ArticleComments",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_CommentReplies_Users_ToUserId",
                         column: x => x.ToUserId,
                         principalTable: "Users",
@@ -194,6 +161,33 @@ namespace BlogSystem.Model.Migrations
                         name: "FK_CommentReplies_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ArticleInCategories",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    CreateTime = table.Column<DateTime>(nullable: false),
+                    IsRemoved = table.Column<bool>(nullable: false),
+                    CategoryId = table.Column<Guid>(nullable: false),
+                    ArticleId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ArticleInCategories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ArticleInCategories_Articles_ArticleId",
+                        column: x => x.ArticleId,
+                        principalTable: "Articles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ArticleInCategories_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -234,11 +228,6 @@ namespace BlogSystem.Model.Migrations
                 column: "ArticleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CommentReplies_CommentId",
-                table: "CommentReplies",
-                column: "CommentId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_CommentReplies_ToUserId",
                 table: "CommentReplies",
                 column: "ToUserId");
@@ -262,6 +251,9 @@ namespace BlogSystem.Model.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "ArticleComments");
+
+            migrationBuilder.DropTable(
                 name: "ArticleInCategories");
 
             migrationBuilder.DropTable(
@@ -272,9 +264,6 @@ namespace BlogSystem.Model.Migrations
 
             migrationBuilder.DropTable(
                 name: "Categories");
-
-            migrationBuilder.DropTable(
-                name: "ArticleComments");
 
             migrationBuilder.DropTable(
                 name: "Articles");

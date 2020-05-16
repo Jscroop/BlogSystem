@@ -17,7 +17,7 @@ namespace BlogSystem.Model
         /// <summary>
         /// 文章内容
         /// </summary>
-        [Required, Column(TypeName = "text")]
+        [Required]
         public string Content { get; set; }
         /// <summary>
         /// 发表人的Id，用户表的外键

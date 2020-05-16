@@ -5,66 +5,57 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace BlogSystem.Core.Controllers
 {
-    [Authorize]
     [ApiController]
-    [Route("api/Category")]
+    [Route("api/category")]
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryService _categoryService;
-        private readonly IHttpContextAccessor _accessor;
         private readonly Guid _userId;
 
-        public CategoryController(ICategoryService categoryService, IHttpContextAccessor accessor)
+        public CategoryController(ICategoryService categoryService, IHttpContextAccessor httpContext)
         {
             _categoryService = categoryService ?? throw new ArgumentNullException(nameof(categoryService));
-            _accessor = accessor ?? throw new ArgumentNullException(nameof(accessor));
-
-            //获取用户Id
-            var jwtStr = _accessor.HttpContext.Request.Headers["Authorization"].ToString();
-            _userId = JwtHelper.JwtDecrypt(jwtStr).UserId;
+            var accessor = httpContext ?? throw new ArgumentNullException(nameof(httpContext));
+            _userId = JwtHelper.JwtDecrypt(accessor.HttpContext.Request.Headers["Authorization"]).UserId;
         }
 
         /// <summary>
-        /// 查询用户分类
+        /// 查询用户的文章分类
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        [HttpGet(nameof(GetCategoryByUserId))]
-        public async Task<ActionResult<IEnumerable<CategoryListViewModel>>> GetCategoryByUserId(Guid userId)
+        [HttpGet("{userId}", Name = nameof(GetCategoryByUserId))]
+        public async Task<IActionResult> GetCategoryByUserId(Guid userId)
         {
             if (userId == Guid.Empty)
             {
                 return NotFound();
             }
-
             var list = await _categoryService.GetCategoryByUserIdAsync(userId);
-            if (list == null)
-            {
-                return NotFound();
-            }
             return Ok(list);
         }
 
         /// <summary>
-        /// 新增分类
+        /// 新增文章分类
         /// </summary>
         /// <param name="categoryName"></param>
         /// <returns></returns>
-        [HttpPost(nameof(CreateCategory))]
-        public async Task<IActionResult> CreateCategory(string categoryName)
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> CreateCategory([FromBody]string categoryName)
         {
-            await _categoryService.CreateCategory(new CreateCategoryViewModel
+            var categoryId = await _categoryService.CreateCategory(categoryName, _userId);
+            if (categoryId == Guid.Empty)
             {
-                UserId = _userId,
-                CategoryName = categoryName
-            });
-            //创建成功返回分类查询页面
-            return CreatedAtRoute(nameof(GetCategoryByUserId), _userId);
+                return BadRequest("重复分类！");
+            }
+            //创建成功返回查询页面链接
+            var category = new CreateCategoryViewModel { CategoryId = categoryId, CategoryName = categoryName };
+            return CreatedAtRoute(nameof(GetCategoryByUserId), new { userId = _userId }, category);
         }
 
         /// <summary>
@@ -72,13 +63,17 @@ namespace BlogSystem.Core.Controllers
         /// </summary>
         /// <param name="categoryId"></param>
         /// <returns></returns>
-        [HttpDelete(nameof(RemoveCategory))]
+        [Authorize]
+        [HttpDelete("{categoryId}")]
         public async Task<IActionResult> RemoveCategory(Guid categoryId)
         {
-            if (!await _categoryService.ExistsAsync(categoryId))
+            //确认是否存在，操作人与归属人是否一致
+            var category = await _categoryService.GetOneByIdAsync(categoryId);
+            if (category == null || category.UserId != _userId)
             {
                 return NotFound();
             }
+
             await _categoryService.RemoveAsync(categoryId);
             return NoContent();
         }
@@ -88,14 +83,15 @@ namespace BlogSystem.Core.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        [HttpPatch(nameof(EditCategory))]
+        [Authorize]
+        [HttpPatch]
         public async Task<IActionResult> EditCategory(EditCategoryViewModel model)
         {
-            if (!await _categoryService.ExistsAsync(model.CategoryId))
+            if (!await _categoryService.EditCategory(model, _userId))
             {
                 return NotFound();
             }
-            await _categoryService.EditCategory(model);
+
             return NoContent();
         }
     }

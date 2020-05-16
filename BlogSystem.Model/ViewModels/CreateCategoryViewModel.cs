@@ -3,17 +3,20 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BlogSystem.Model.ViewModels
 {
+    /// <summary>
+    /// 创建文章分类
+    /// </summary>
     public class CreateCategoryViewModel
     {
         /// <summary>
-        /// 创建用户Id
+        /// 分类Id
         /// </summary>
-        public Guid UserId { get; set; }
+        public Guid CategoryId { get; set; }
 
         /// <summary>
         /// 分类名称
         /// </summary>
-        [Required]
+        [Required, StringLength(30, MinimumLength = 2)]
         public string CategoryName { get; set; }
     }
 }

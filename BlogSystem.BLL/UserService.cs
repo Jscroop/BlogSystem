@@ -28,17 +28,17 @@ namespace BlogSystem.BLL
         public async Task<bool> Register(RegisterViewModel model)
         {
             //判断账户是否存在
-            if (!await _userRepository.GetAll().AnyAsync(m => m.Account == model.Account))
+            if (await _userRepository.GetAll().AnyAsync(m => m.Account == model.Account))
             {
-                var pwd = Md5Helper.Md5Encrypt(model.Password);
-                await _userRepository.CreateAsync(new User()
-                {
-                    Account = model.Account,
-                    Password = pwd
-                });
-                return true;
+                return false;
             }
-            return false;
+            var pwd = Md5Helper.Md5Encrypt(model.Password);
+            await _userRepository.CreateAsync(new User
+            {
+                Account = model.Account,
+                Password = pwd
+            });
+            return true;
         }
 
         /// <summary>
@@ -50,52 +50,63 @@ namespace BlogSystem.BLL
         {
             var pwd = Md5Helper.Md5Encrypt(model.Password);
             var user = await _userRepository.GetAll().FirstOrDefaultAsync(m => m.Account == model.Account && m.Password == pwd);
-            return user != null ? user.Id : new Guid();
+            return user == null ? new Guid() : user.Id;
         }
 
         /// <summary>
         /// 修改用户密码
         /// </summary>
         /// <param name="model"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        public async Task<bool> ChangePassword(ChangePwdViewModel model)
+        public async Task<bool> ChangePassword(ChangePwdViewModel model, Guid userId)
         {
             var oldPwd = Md5Helper.Md5Encrypt(model.OldPassword);
-            var newPwd = Md5Helper.Md5Encrypt(model.NewPassword);
-            if (await _userRepository.GetAll().AnyAsync(m => m.Id == model.UserId && m.Password == oldPwd))
+            var user = await _userRepository.GetAll().FirstOrDefaultAsync(m => m.Id == userId && m.Password == oldPwd);
+            if (user == null)
             {
-                var user = await _userRepository.GetAll().FirstOrDefaultAsync(m => m.Id == model.UserId && m.Password == oldPwd);
-                user.Password = newPwd;
-                await _userRepository.EditAsync(user);
-                return true;
+                return false;
             }
-            return false;
+            var newPwd = Md5Helper.Md5Encrypt(model.NewPassword);
+            user.Password = newPwd;
+            await _userRepository.EditAsync(user);
+            return true;
         }
 
         /// <summary>
         /// 修改用户照片
         /// </summary>
-        /// <param name="model"></param>
+        /// <param name="profilePhoto"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        public async Task ChangeUserPhoto(ChangeUserPhotoViewModel model)
+        public async Task<bool> ChangeUserPhoto(string profilePhoto, Guid userId)
         {
-            var user = await _userRepository.GetAll().FirstAsync(m => m.Id == model.UserId);
-            user.ProfilePhoto = model.ProfilePhoto;
+            var user = await _userRepository.GetAll().FirstOrDefaultAsync(m => m.Id == userId);
+            if (user == null) return false;
+            user.ProfilePhoto = profilePhoto;
             await _userRepository.EditAsync(user);
+            return true;
         }
 
         /// <summary>
-        /// 修改用户信息
+        ///  修改用户信息
         /// </summary>
         /// <param name="model"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        public async Task ChangeUserInfo(ChangeUserInfoViewModel model)
+        public async Task<bool> ChangeUserInfo(ChangeUserInfoViewModel model, Guid userId)
         {
-            var user = await _userRepository.GetAll().FirstAsync(m => m.Id == model.UserId);
+            //确保用户名唯一
+            if (await _userRepository.GetAll().AnyAsync(m => m.Account == model.Account))
+            {
+                return false;
+            }
+            var user = await _userRepository.GetOneByIdAsync(userId);
             user.Account = model.Account;
             user.Gender = model.Gender;
             user.BirthOfDate = model.BirthOfDate;
             await _userRepository.EditAsync(user);
+            return true;
         }
 
         /// <summary>
@@ -110,12 +121,11 @@ namespace BlogSystem.BLL
                 return await _userRepository.GetAll().Where(m => m.Account == account).Select(m =>
                     new UserDetailsViewModel()
                     {
-                        UserId = m.Id,
                         Account = m.Account,
                         ProfilePhoto = m.ProfilePhoto,
                         Age = DateTime.Now.Year - m.BirthOfDate.Year,
-                        Gender = m.Gender,
-                        Level = m.Level,
+                        Gender = m.Gender.ToString(),
+                        Level = m.Level.ToString(),
                         FansNum = m.FansNum,
                         FocusNum = m.FocusNum
                     }).FirstAsync();

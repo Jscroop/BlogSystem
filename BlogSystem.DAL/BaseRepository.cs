@@ -119,7 +119,7 @@ namespace BlogSystem.DAL
         /// <returns></returns>
         public async Task<bool> Exists(Guid id)
         {
-            return await GetAll().AnyAsync(m => m.Id == id);
+            return await GetAll().AnyAsync(m => m.Id == id && m.IsRemoved == false);
         }
     }
 }

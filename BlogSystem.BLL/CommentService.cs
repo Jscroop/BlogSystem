@@ -26,39 +26,110 @@ namespace BlogSystem.BLL
         /// 添加评论
         /// </summary>
         /// <param name="model"></param>
+        /// <param name="articleId"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        public async Task CreateComment(ArticleComment model)
+        public async Task CreateComment(CreateCommentViewModel model, Guid articleId, Guid userId)
         {
-            await _commentRepository.CreateAsync(model);
+            await _commentRepository.CreateAsync(new ArticleComment()
+            {
+                ArticleId = articleId,
+                Content = model.Content,
+                UserId = userId
+            });
         }
 
         /// <summary>
-        /// 添加回复型评论
+        ///  添加普通评论的回复
         /// </summary>
         /// <param name="model"></param>
+        /// <param name="articleId"></param>
+        /// <param name="commentId"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        public async Task CreateReplyComment(CommentReply model)
+        public async Task CreateReplyComment(CreateApplyCommentViewModel model, Guid articleId, Guid commentId, Guid userId)
         {
-            await _commentReplyRepository.CreateAsync(model);
+            var comment = await _commentRepository.GetOneByIdAsync(commentId);
+            var toUserId = comment.UserId;
+
+            await _commentReplyRepository.CreateAsync(new CommentReply()
+            {
+                CommentId = commentId,
+                ToUserId = toUserId,
+                ArticleId = articleId,
+                UserId = userId,
+                Content = model.Content
+            });
         }
 
         /// <summary>
-        /// 根据文章Id获取评论信息，需要考虑回复型评论
+        /// 添加回复型评论的回复
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="articleId"></param>
+        /// <param name="commentId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public async Task CreateToReplyComment(CreateApplyCommentViewModel model, Guid articleId, Guid commentId, Guid userId)
+        {
+            var comment = await _commentReplyRepository.GetOneByIdAsync(commentId);
+            var toUserId = comment.UserId;
+
+            await _commentReplyRepository.CreateAsync(new CommentReply()
+            {
+                CommentId = commentId,
+                ToUserId = toUserId,
+                ArticleId = articleId,
+                UserId = userId,
+                Content = model.Content
+            });
+        }
+
+        /// <summary>
+        /// 根据文章Id获取评论信息
         /// </summary>
         /// <param name="articleId"></param>
         /// <returns></returns>
         public async Task<List<CommentListViewModel>> GetCommentsByArticleIdAsync(Guid articleId)
         {
-            return await _commentRepository.GetAllByOrder(false).Where(m => m.ArticleId == articleId)
-                    .Include(m => m.User).Select(m => new CommentListViewModel
-                    {
-                        ArticleId = m.ArticleId,
-                        UserId = m.UserId,
-                        Account = m.User.Account,
-                        CommentId = m.Id,
-                        CommentContent = m.Content,
-                        CreateTime = m.CreateTime
-                    }).ToListAsync();
+            //正常评论
+            var comment = await _commentRepository.GetAll().Where(m => m.ArticleId == articleId)
+                .Include(m => m.User).Select(m => new CommentListViewModel
+                {
+                    ArticleId = m.ArticleId,
+                    UserId = m.UserId,
+                    Account = m.User.Account,
+                    ProfilePhoto = m.User.ProfilePhoto,
+                    CommentId = m.Id,
+                    CommentContent = m.Content,
+                    CreateTime = m.CreateTime
+                }).ToListAsync();
+
+            //回复型的评论
+            var replyComment = await _commentReplyRepository.GetAll().Where(m => m.ArticleId == articleId)
+                .Include(m => m.User).Select(m => new CommentListViewModel
+                {
+                    ArticleId = m.ArticleId,
+                    UserId = m.UserId,
+                    Account = m.User.Account,
+                    ProfilePhoto = m.User.ProfilePhoto,
+                    CommentId = m.Id,
+                    CommentContent = $"@{m.ToUser.Account}" + Environment.NewLine + m.Content,
+                    CreateTime = m.CreateTime
+                }).ToListAsync();
+
+            var list = comment.Union(replyComment).OrderByDescending(m => m.CreateTime).ToList();
+            return list;
+        }
+
+        /// <summary>
+        /// 确认回复型评论是否存在
+        /// </summary>
+        /// <param name="commentId"></param>
+        /// <returns></returns>
+        public async Task<bool> ReplyExistAsync(Guid commentId)
+        {
+            return await _commentReplyRepository.GetAll().AnyAsync(m => m.Id == commentId);
         }
     }
 }

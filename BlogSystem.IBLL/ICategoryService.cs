@@ -14,16 +14,18 @@ namespace BlogSystem.IBLL
         /// <summary>
         /// 创建分类
         /// </summary>
-        /// <param name="model"></param>
+        /// <param name="categoryName"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        Task CreateCategory(CreateCategoryViewModel model);
+        Task<Guid> CreateCategory(string categoryName, Guid userId);
 
         /// <summary>
         /// 编辑分类
         /// </summary>
         /// <param name="model"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        Task EditCategory(EditCategoryViewModel model);
+        Task<bool> EditCategory(EditCategoryViewModel model, Guid userId);
 
         /// <summary>
         /// 通过用户Id获取所有分类

@@ -10,11 +10,6 @@ namespace BlogSystem.Model.ViewModels
     public class CreateArticleViewModel
     {
         /// <summary>
-        /// 创建用户Id
-        /// </summary>
-        public Guid UserId { get; set; }
-
-        /// <summary>
         /// 文章标题
         /// </summary>
         [Required]
@@ -29,6 +24,7 @@ namespace BlogSystem.Model.ViewModels
         /// <summary>
         /// 文章分类
         /// </summary>
+        [Required]
         public List<Guid> CategoryIds { get; set; }
     }
 }

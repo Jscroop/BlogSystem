@@ -25,11 +25,12 @@ namespace BlogSystem.Model
         /// <summary>
         /// 出生日期
         /// </summary>
-        public DateTime BirthOfDate { get; set; }
+        public DateTime BirthOfDate { get; set; } = DateTime.Today;
+
         /// <summary>
         /// 性别
         /// </summary>
-        public Gender Gender { get; set; }
+        public Gender Gender { get; set; } = Gender.保密;
         /// <summary>
         /// 用户等级
         /// </summary>

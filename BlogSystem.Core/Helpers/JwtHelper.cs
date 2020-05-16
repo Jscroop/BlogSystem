@@ -6,18 +6,19 @@ using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Http;
 
 namespace BlogSystem.Core.Helpers
 {
     public static class JwtHelper
     {
         private static IConfiguration _configuration;
+
         //获取Startup构造函数中的Configuration对象
         public static void GetConfiguration(IConfiguration configuration)
         {
             _configuration = configuration;
         }
-
         /// <summary>
         /// Jwt加密
         /// </summary>
@@ -64,7 +65,7 @@ namespace BlogSystem.Core.Helpers
         /// <returns></returns>
         public static TokenModelJwt JwtDecrypt(string jwtStr)
         {
-            if (string.IsNullOrEmpty(jwtStr)||string.IsNullOrWhiteSpace(jwtStr))
+            if (string.IsNullOrEmpty(jwtStr) || string.IsNullOrWhiteSpace(jwtStr))
             {
                 return new TokenModelJwt();
             }

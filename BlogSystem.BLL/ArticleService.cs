@@ -18,85 +18,81 @@ namespace BlogSystem.BLL
         private readonly IArticleRepository _articleRepository;
         private readonly IArticleInCategoryRepository _articleInCategoryRepository;
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IUserRepository _userRepository;
 
         //构造函数注入相关接口
         public ArticleService(IArticleRepository articleRepository, IArticleInCategoryRepository articleInCategoryRepository,
-        ICategoryRepository categoryRepository)
+        ICategoryRepository categoryRepository, IUserRepository userRepository)
         {
             _articleRepository = articleRepository;
             BaseRepository = articleRepository;
             _articleInCategoryRepository = articleInCategoryRepository;
             _categoryRepository = categoryRepository;
+            _userRepository = userRepository;
         }
 
         /// <summary>
         /// 创建文章
         /// </summary>
         /// <param name="model"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        public async Task CreateArticleAsync(CreateArticleViewModel model)
+        public async Task<Guid> CreateArticleAsync(CreateArticleViewModel model, Guid userId)
         {
             //新增文章
-            var article = new Article()
+            var articleId = Guid.NewGuid();
+            var article = new Article
             {
-                UserId = model.UserId,
+                Id = articleId,
+                UserId = userId,
                 Title = model.Title,
                 Content = model.Content
             };
             await _articleRepository.CreateAsync(article);
 
             //新增文章所属分类
-            var articleId = article.Id;
-            foreach (var categoryId in model.CategoryIds)
-            {
-                await _articleInCategoryRepository.CreateAsync(new ArticleInCategory()
-                {
-                    ArticleId = articleId,
-                    CategoryId = categoryId
-                }, false);
-            }
-            await _articleInCategoryRepository.SavedAsync();
+            await CreateArticleInCategory(article.Id, model.CategoryIds);
+
+            return articleId;
         }
 
         /// <summary>
         /// 编辑文章
         /// </summary>
         /// <param name="model"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        public async Task EditArticleAsync(EditArticleViewModel model)
+        public async Task<bool> EditArticleAsync(EditArticleViewModel model, Guid userId)
         {
+            //删除文章所属分类
+            if (!await RemoveArticleInCategory(model.Id, userId))
+            {
+                return false;
+            }
+
+            //新增文章所属分类
+            await CreateArticleInCategory(model.Id, model.CategoryIds);
+
             //保存文章更新
             var article = await _articleRepository.GetOneByIdAsync(model.Id);
             article.Title = model.Title;
             article.Content = model.Content;
             await _articleRepository.EditAsync(article);
 
-            //删除所属分类
-            var categoryIds = _articleInCategoryRepository.GetAll();
-            foreach (var categoryId in categoryIds)
-            {
-                await _articleInCategoryRepository.RemoveAsync(categoryId, false);
-            }
-            //添加所属分类
-            foreach (var categoryId in model.CategoryIds)
-            {
-                await _articleInCategoryRepository.CreateAsync(new ArticleInCategory()
-                {
-                    ArticleId = model.Id,
-                    CategoryId = categoryId
-                }, false);
-            }
-            //统一保存
-            await _articleInCategoryRepository.SavedAsync();
+            return true;
         }
 
         /// <summary>
-        /// 获取文章详情
+        /// 通过文章Id获取文章详情
         /// </summary>
         /// <param name="articleId"></param>
         /// <returns></returns>
         public async Task<ArticleDetailsViewModel> GetArticleDetailsByArticleIdAsync(Guid articleId)
         {
+            if (!await _articleRepository.GetAll().AnyAsync(m => m.Id == articleId))
+            {
+                return new ArticleDetailsViewModel();
+            }
             var data = await _articleRepository.GetAll().Include(m => m.User).Where(m => m.Id == articleId)
                 .Select(m => new ArticleDetailsViewModel
                 {
@@ -124,8 +120,12 @@ namespace BlogSystem.BLL
         /// <returns></returns>
         public async Task<List<ArticleListViewModel>> GetArticlesByUserIdAsync(Guid userId)
         {
-            var list = await _articleRepository.GetAllByOrder(false).Include(m => m.User).Where(m => m.UserId == userId)
-                .Select(m => new ArticleListViewModel()
+            if (!await _articleRepository.GetAll().AnyAsync(m => m.UserId == userId))
+            {
+                return new List<ArticleListViewModel>();
+            }
+            return await _articleRepository.GetAllByOrder(false).Include(m => m.User)
+                .Where(m => m.UserId == userId).Select(m => new ArticleListViewModel
                 {
                     ArticleId = m.Id,
                     Title = m.Title,
@@ -134,19 +134,34 @@ namespace BlogSystem.BLL
                     Account = m.User.Account,
                     ProfilePhoto = m.User.ProfilePhoto
                 }).ToListAsync();
-            return list;
         }
 
         /// <summary>
-        /// 通过分类Id获取文章列表
+        /// 通过用户分类Id获取文章列表
         /// </summary>
+        /// <param name="userId"></param>
         /// <param name="categoryId"></param>
         /// <returns></returns>
-        public async Task<List<ArticleListViewModel>> GetArticlesByCategoryIdAsync(Guid categoryId)
+        public async Task<List<ArticleListViewModel>> GetArticlesByCategoryIdAsync(Guid userId, Guid categoryId)
         {
-            var data = await _categoryRepository.GetOneByIdAsync(categoryId);
-            var userId = data.UserId;
-            return await GetArticlesByUserIdAsync(userId);
+            //判断有无用户及分类信息
+            if (!await _categoryRepository.GetAll().AnyAsync(m => m.UserId == userId && m.Id == categoryId))
+            {
+                return new List<ArticleListViewModel>();
+            }
+
+            var user = await _userRepository.GetOneByIdAsync(userId);
+
+            return await _articleInCategoryRepository.GetAll().Include(m => m.Article)
+                .Where(m => m.CategoryId == categoryId).Select(m => new ArticleListViewModel
+                {
+                    ArticleId = m.Id,
+                    Title = m.Article.Title,
+                    Content = m.Article.Content,
+                    CreateTime = m.CreateTime,
+                    Account = user.Account,
+                    ProfilePhoto = user.ProfilePhoto
+                }).ToListAsync();
         }
 
         /// <summary>
@@ -163,8 +178,9 @@ namespace BlogSystem.BLL
         /// 看好数量+1
         /// </summary>
         /// <param name="articleId"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        public async Task AddGoodCount(Guid articleId)
+        public async Task AddGoodCount(Guid articleId, Guid userId)
         {
             var article = await _articleRepository.GetOneByIdAsync(articleId);
             article.GoodCount++;
@@ -175,12 +191,55 @@ namespace BlogSystem.BLL
         /// 不看好数量+1
         /// </summary>
         /// <param name="articleId"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        public async Task AddBadCount(Guid articleId)
+        public async Task AddBadCount(Guid articleId, Guid userId)
         {
             var article = await _articleRepository.GetOneByIdAsync(articleId);
-            article.BadCount--;
+            article.BadCount++;
             await _articleRepository.EditAsync(article);
+        }
+
+        /// <summary>
+        ///  删除文章所属分类信息
+        /// </summary>
+        /// <param name="articleId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public async Task<bool> RemoveArticleInCategory(Guid articleId, Guid userId)
+        {
+            //判断是否为该用户文章
+            if (!await _articleRepository.GetAll().AnyAsync(m => m.UserId == userId && m.Id == articleId))
+            {
+                return false;
+            }
+            //删除文章所属分类信息
+            var categoryIds = _articleInCategoryRepository.GetAll().Where(m => m.ArticleId == articleId);
+            foreach (var categoryId in categoryIds)
+            {
+                await _articleInCategoryRepository.RemoveAsync(categoryId, false);
+            }
+            await _articleInCategoryRepository.SavedAsync();
+            return true;
+        }
+
+        /// <summary>
+        /// 新增文章所属分类信息
+        /// </summary>
+        /// <param name="articleId"></param>
+        /// <param name="categoryIds"></param>
+        /// <returns></returns>
+        public async Task CreateArticleInCategory(Guid articleId, List<Guid> categoryIds)
+        {
+            foreach (var categoryId in categoryIds)
+            {
+                await _articleInCategoryRepository.CreateAsync(new ArticleInCategory()
+                {
+                    ArticleId = articleId,
+                    CategoryId = categoryId
+                }, false);
+            }
+            await _articleInCategoryRepository.SavedAsync();
         }
     }
 }

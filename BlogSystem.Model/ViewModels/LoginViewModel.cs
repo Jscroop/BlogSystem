@@ -20,8 +20,5 @@ namespace BlogSystem.Model.ViewModels
         /// </summary>
         [Required, StringLength(20, MinimumLength = 6), DisplayName("用户密码"), DataType(DataType.Password)]
         public string Password { get; set; }
-
-        //[DisplayName("记住我")]
-        //public bool RememberMe { get; set; }
     }
 }

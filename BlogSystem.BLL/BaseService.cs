@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using BlogSystem.IBLL;
 using BlogSystem.IDAL;
 using BlogSystem.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlogSystem.BLL
 {
@@ -43,6 +45,15 @@ namespace BlogSystem.BLL
         public async Task<TEntity> GetOneByIdAsync(Guid id)
         {
             return await BaseRepository.GetOneByIdAsync(id);
+        }
+
+        /// <summary>
+        /// 获取所有信息
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<TEntity>> GetAllAsync()
+        {
+            return await BaseRepository.GetAll().ToListAsync();
         }
 
         /// <summary>

@@ -9,11 +9,6 @@ namespace BlogSystem.Model.ViewModels
     public class ChangePwdViewModel
     {
         /// <summary>
-        /// 用户Id
-        /// </summary>
-        public Guid UserId { get; set; }
-
-        /// <summary>
         /// 旧密码
         /// </summary>
         [Required]
@@ -28,7 +23,7 @@ namespace BlogSystem.Model.ViewModels
         /// <summary>
         /// 确认新密码
         /// </summary>
-        [Required]
+        [Required, Compare(nameof(NewPassword))]
         public string RequirePassword { get; set; }
     }
 }

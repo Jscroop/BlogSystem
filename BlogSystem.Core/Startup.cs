@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 using System.Threading.Tasks;
 using Autofac;
 using BlogSystem.Core.Helpers;
@@ -29,6 +31,7 @@ namespace BlogSystem.Core
         public Startup(IConfiguration configuration)
         {
             _configuration = configuration;
+            //传递Configuration对象
             JwtHelper.GetConfiguration(_configuration);
         }
 
@@ -41,8 +44,8 @@ namespace BlogSystem.Core
             }).AddXmlDataContractSerializerFormatters();//开启输出输入支持XML格式
 
             //SqlServer服务注册
-            services.AddDbContext<BlogSystemContext>(options =>
-                options.UseSqlServer(_configuration.GetConnectionString("BlogSystemDbConnection")));
+            //services.AddDbContext<BlogSystemContext>(options =>
+            //    options.UseSqlServer(_configuration.GetConnectionString("BlogSystemDbConnection")));
 
             //注册Swagger服务
             services.AddSwaggerGen(options =>
@@ -65,7 +68,7 @@ namespace BlogSystem.Core
                 options.OperationFilter<AppendAuthorizeToSummaryOperationFilter>();
                 options.OperationFilter<SecurityRequirementsOperationFilter>();
                 //配置方法
-                options.AddSecurityDefinition("oauth2",new OpenApiSecurityScheme()
+                options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme()
                 {
                     Description = "请在输入时添加Bearer和一个空格",
                     Name = "Authorization",
@@ -98,6 +101,7 @@ namespace BlogSystem.Core
                 };
             });
 
+            //注册HttpContext存取器服务
             services.AddHttpContextAccessor();
         }
 
@@ -122,6 +126,17 @@ namespace BlogSystem.Core
                 {
                     x.SwaggerEndpoint("/swagger/V1/swagger.json", "ApiHelpDoc-V1");
                     x.RoutePrefix = "";//路径配置设置为空，表示直接在根域名访问该文件
+                });
+            }
+            else
+            {
+                app.UseExceptionHandler(builder =>
+                {
+                    builder.Run(async context =>
+                    {
+                        context.Response.StatusCode = 500;
+                        await context.Response.WriteAsync("Unexpected Error!");
+                    });
                 });
             }
 

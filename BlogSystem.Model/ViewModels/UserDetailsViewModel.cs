@@ -3,14 +3,10 @@
 namespace BlogSystem.Model.ViewModels
 {
     /// <summary>
-    /// 用户详细信息-点击查看主页
+    /// 用户详细信息
     /// </summary>
     public class UserDetailsViewModel
     {
-        /// <summary>
-        /// 用户Id
-        /// </summary>
-        public Guid UserId { get; set; }
         /// <summary>
         /// 账号
         /// </summary>
@@ -26,11 +22,11 @@ namespace BlogSystem.Model.ViewModels
         /// <summary>
         /// 性别
         /// </summary>
-        public Gender Gender { get; set; }
+        public string Gender { get; set; }
         /// <summary>
         /// 用户等级
         /// </summary>
-        public Level Level { get; set; }
+        public string Level { get; set; }
         /// <summary>
         /// 粉丝数
         /// </summary>
