@@ -80,7 +80,7 @@ namespace BlogSystem.DAL
         /// <returns></returns>
         public async Task<TEntity> GetOneByIdAsync(Guid id)
         {
-            return await GetAll().FirstOrDefaultAsync(m => m.Id == id);
+            return await GetAll().FirstOrDefaultAsync(m => m.Id == id && m.IsRemoved == false);
         }
 
         /// <summary>

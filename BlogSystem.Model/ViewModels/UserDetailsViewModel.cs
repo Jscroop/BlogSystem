@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace BlogSystem.Model.ViewModels
+﻿namespace BlogSystem.Model.ViewModels
 {
     /// <summary>
     /// 用户详细信息

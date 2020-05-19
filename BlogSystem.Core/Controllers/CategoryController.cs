@@ -14,11 +14,14 @@ namespace BlogSystem.Core.Controllers
     public class CategoryController : ControllerBase
     {
         private readonly ICategoryService _categoryService;
+        private readonly IArticleService _aeArticleService;
         private readonly Guid _userId;
 
-        public CategoryController(ICategoryService categoryService, IHttpContextAccessor httpContext)
+        public CategoryController(ICategoryService categoryService, IArticleService articleService,
+            IHttpContextAccessor httpContext)
         {
             _categoryService = categoryService ?? throw new ArgumentNullException(nameof(categoryService));
+            _aeArticleService = articleService ?? throw new ArgumentNullException(nameof(articleService));
             var accessor = httpContext ?? throw new ArgumentNullException(nameof(httpContext));
             _userId = JwtHelper.JwtDecrypt(accessor.HttpContext.Request.Headers["Authorization"]).UserId;
         }
@@ -72,6 +75,12 @@ namespace BlogSystem.Core.Controllers
             if (category == null || category.UserId != _userId)
             {
                 return NotFound();
+            }
+            //有文章使用了该分类，无法删除
+            var data = await _aeArticleService.GetArticlesByCategoryIdAsync(_userId, categoryId);
+            if (data.Count > 0)
+            {
+                return BadRequest("存在使用该分类的文章！");
             }
 
             await _categoryService.RemoveAsync(categoryId);
