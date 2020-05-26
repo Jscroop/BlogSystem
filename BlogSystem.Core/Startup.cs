@@ -1,26 +1,25 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Text.Encodings.Web;
-using System.Text.Unicode;
-using System.Threading.Tasks;
 using Autofac;
+using Autofac.Extras.DynamicProxy;
+using BlogSystem.Common.Helpers.SortHelper;
+using BlogSystem.Core.AOP;
 using BlogSystem.Core.Helpers;
-using BlogSystem.Model;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
+using System;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using BlogSystem.Common.Helpers;
+using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace BlogSystem.Core
 {
@@ -41,6 +40,8 @@ namespace BlogSystem.Core
             services.AddControllers(setup =>
             {
                 setup.ReturnHttpNotAcceptable = true;//开启不存在请求格式则返回406状态码的选项
+                var jsonOutputFormatter = setup.OutputFormatters.OfType<SystemTextJsonOutputFormatter>()?.FirstOrDefault();//不为空则继续执行
+                jsonOutputFormatter?.SupportedMediaTypes.Add("application/vnd.company.hateoas+json");
             }).AddXmlDataContractSerializerFormatters();//开启输出输入支持XML格式
 
             //SqlServer服务注册
@@ -103,15 +104,27 @@ namespace BlogSystem.Core
 
             //注册HttpContext存取器服务
             services.AddHttpContextAccessor();
+
+            //自定义判断属性隐射关系
+            services.AddTransient<IPropertyMappingService, PropertyMappingService>();
+
+            services.AddTransient<IPropertyCheckService, PropertyCheckService>();
         }
 
         //configureContainer访问AutoFac容器生成器
         public void ConfigureContainer(ContainerBuilder builder)
         {
             //获取程序集并注册,采用每次请求都创建一个新的对象的模式
-            var assemblyIBll = Assembly.LoadFrom(Path.Combine(AppContext.BaseDirectory, "BlogSystem.BLL.dll"));
-            var assemblyIDal = Assembly.LoadFrom(Path.Combine(AppContext.BaseDirectory, "BlogSystem.DAL.dll"));
-            builder.RegisterAssemblyTypes(assemblyIBll, assemblyIDal).AsImplementedInterfaces().InstancePerDependency();
+            var assemblyBll = Assembly.LoadFrom(Path.Combine(AppContext.BaseDirectory, "BlogSystem.BLL.dll"));
+            var assemblyDal = Assembly.LoadFrom(Path.Combine(AppContext.BaseDirectory, "BlogSystem.DAL.dll"));
+
+            builder.RegisterAssemblyTypes(assemblyDal).AsImplementedInterfaces().InstancePerDependency();
+
+            //注册拦截器
+            builder.RegisterType<LogAop>();
+            //对目标类型启用动态代理，并注入自定义拦截器拦截BLL
+            builder.RegisterAssemblyTypes(assemblyBll).AsImplementedInterfaces().InstancePerDependency()
+           .EnableInterfaceInterceptors().InterceptedBy(typeof(LogAop));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

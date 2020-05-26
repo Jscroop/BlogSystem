@@ -1,12 +1,15 @@
-﻿using System;
+﻿using BlogSystem.IBLL;
+using BlogSystem.IDAL;
+using BlogSystem.Model;
+using BlogSystem.Model.Parameters;
+using BlogSystem.Model.ViewModels;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BlogSystem.IBLL;
-using BlogSystem.IDAL;
-using BlogSystem.Model;
-using BlogSystem.Model.ViewModels;
-using Microsoft.EntityFrameworkCore;
+using BlogSystem.Common.Helpers.SortHelper;
+using BlogSystem.Model.Helpers;
 
 namespace BlogSystem.BLL
 {
@@ -19,16 +22,18 @@ namespace BlogSystem.BLL
         private readonly IArticleInCategoryRepository _articleInCategoryRepository;
         private readonly ICategoryRepository _categoryRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IPropertyMappingService _propertyMappingService;
 
         //构造函数注入相关接口
         public ArticleService(IArticleRepository articleRepository, IArticleInCategoryRepository articleInCategoryRepository,
-        ICategoryRepository categoryRepository, IUserRepository userRepository)
+        ICategoryRepository categoryRepository, IUserRepository userRepository, IPropertyMappingService propertyMappingService)
         {
             _articleRepository = articleRepository;
             BaseRepository = articleRepository;
             _articleInCategoryRepository = articleInCategoryRepository;
             _categoryRepository = categoryRepository;
             _userRepository = userRepository;
+            _propertyMappingService = propertyMappingService;
         }
 
         /// <summary>
@@ -240,6 +245,63 @@ namespace BlogSystem.BLL
                 }, false);
             }
             await _articleInCategoryRepository.SavedAsync();
+        }
+
+        /// <summary>
+        /// 文章过滤及搜索
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public async Task<PageList<ArticleListViewModel>> GetArticles(ArticleParameters parameters)
+        {
+            if (parameters == null) throw new ArgumentNullException(nameof(parameters));
+
+            var resultList = _articleRepository.GetAll();
+
+            var dateTime = DateTime.Now;
+
+            //过滤条件，判断枚举是否引用
+            if (Enum.IsDefined(typeof(DistanceTime), parameters.DistanceTime))
+            {
+                switch (parameters.DistanceTime)
+                {
+                    case DistanceTime.Week:
+                        dateTime = dateTime.AddDays(-7);
+                        break;
+                    case DistanceTime.Month:
+                        dateTime = dateTime.AddMonths(-1);
+                        break;
+                    case DistanceTime.Year:
+                        dateTime = dateTime.AddYears(-1);
+                        break;
+                }
+                resultList = resultList.Where(m => m.CreateTime > dateTime);
+            }
+
+            //搜索条件，暂时添加标题和内容
+            if (!string.IsNullOrWhiteSpace(parameters.SearchStr))
+            {
+                parameters.SearchStr = parameters.SearchStr.Trim();
+                resultList = resultList.Where(m =>
+                    m.Title.Contains(parameters.SearchStr) || m.Content.Contains(parameters.SearchStr));
+            }
+
+            //转换为viewModel
+            var list = resultList.Select(m => new ArticleListViewModel
+            {
+                ArticleId = m.Id,
+                Title = m.Title,
+                Content = m.Content,
+                CreateTime = m.CreateTime,
+                Account = m.User.Account,
+                ProfilePhoto = m.User.ProfilePhoto
+            });
+
+            //排序
+            var mappingDictionary = _propertyMappingService.GetPropertyMapping<ArticleListViewModel, Article>();
+            list = list.ApplySort(parameters.Orderby, mappingDictionary);
+
+            return await PageList<ArticleListViewModel>.CreatePageMsgAsync(list, parameters.PageNumber, parameters.PageSize);
         }
     }
 }

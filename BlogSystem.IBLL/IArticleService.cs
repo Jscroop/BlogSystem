@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BlogSystem.Model;
+using BlogSystem.Model.Helpers;
+using BlogSystem.Model.Parameters;
 using BlogSystem.Model.ViewModels;
 
 namespace BlogSystem.IBLL
@@ -87,5 +89,12 @@ namespace BlogSystem.IBLL
         /// <param name="categoryIds"></param>
         /// <returns></returns>
         Task CreateArticleInCategory(Guid articleId, List<Guid> categoryIds);
+
+        /// <summary>
+        /// 文章过滤及搜索
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        Task<PageList<ArticleListViewModel>> GetArticles(ArticleParameters parameters);
     }
 }

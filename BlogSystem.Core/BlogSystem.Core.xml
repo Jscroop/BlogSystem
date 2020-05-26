@@ -25,11 +25,13 @@
             <param name="articleId"></param>
             <returns></returns>
         </member>
-        <member name="M:BlogSystem.Core.Controllers.ArticleController.GetArticleByArticleId(System.Guid)">
+        <member name="M:BlogSystem.Core.Controllers.ArticleController.GetArticleByArticleId(System.Guid,System.String,System.String)">
             <summary>
             通过文章Id获取文章详情
             </summary>
             <param name="articleId"></param>
+            <param name="fields"></param>
+            <param name="mediaType"></param>
             <returns></returns>
         </member>
         <member name="M:BlogSystem.Core.Controllers.ArticleController.GetArticlesByUserId(System.Guid)">
@@ -45,6 +47,13 @@
             </summary>
             <param name="userId"></param>
             <param name="categoryId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:BlogSystem.Core.Controllers.ArticleController.GetArticles(BlogSystem.Model.Parameters.ArticleParameters)">
+            <summary>
+            过滤/搜索文章信息并返回list和分页信息
+            </summary>
+            <param name="parameters"></param>
             <returns></returns>
         </member>
         <member name="M:BlogSystem.Core.Controllers.CategoryController.GetCategoryByUserId(System.Guid)">
