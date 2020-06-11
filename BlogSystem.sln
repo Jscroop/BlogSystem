@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogSystem.Common", "BlogSy
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlogSystem.Core", "BlogSystem.Core\BlogSystem.Core.csproj", "{6A1DBA0C-2C39-49D9-A1AF-A37DF4C8D6BB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogSystem.Core.Test", "BlogSystem.Core.Test\BlogSystem.Core.Test.csproj", "{6DC67B51-ED64-49E4-81F2-6F65BE27487B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{6A1DBA0C-2C39-49D9-A1AF-A37DF4C8D6BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A1DBA0C-2C39-49D9-A1AF-A37DF4C8D6BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A1DBA0C-2C39-49D9-A1AF-A37DF4C8D6BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DC67B51-ED64-49E4-81F2-6F65BE27487B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DC67B51-ED64-49E4-81F2-6F65BE27487B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DC67B51-ED64-49E4-81F2-6F65BE27487B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DC67B51-ED64-49E4-81F2-6F65BE27487B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

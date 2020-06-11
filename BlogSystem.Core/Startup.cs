@@ -1,12 +1,15 @@
 using Autofac;
 using Autofac.Extras.DynamicProxy;
+using BlogSystem.Common.Helpers;
 using BlogSystem.Common.Helpers.SortHelper;
 using BlogSystem.Core.AOP;
+using BlogSystem.Core.Filters;
 using BlogSystem.Core.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -18,8 +21,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using BlogSystem.Common.Helpers;
-using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace BlogSystem.Core
 {
@@ -42,6 +43,7 @@ namespace BlogSystem.Core
                 setup.ReturnHttpNotAcceptable = true;//开启不存在请求格式则返回406状态码的选项
                 var jsonOutputFormatter = setup.OutputFormatters.OfType<SystemTextJsonOutputFormatter>()?.FirstOrDefault();//不为空则继续执行
                 jsonOutputFormatter?.SupportedMediaTypes.Add("application/vnd.company.hateoas+json");
+                setup.Filters.Add(typeof(ExceptionsFilter));//添加异常过滤器
             }).AddXmlDataContractSerializerFormatters();//开启输出输入支持XML格式
 
             //SqlServer服务注册
@@ -78,7 +80,7 @@ namespace BlogSystem.Core
                 });
             });
 
-            //jwt授权服务注册
+            //jwt认证服务注册
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -155,10 +157,10 @@ namespace BlogSystem.Core
 
             app.UseRouting();
 
-            //添加授权中间件
+            //添加认证中间件
             app.UseAuthentication();
 
-            //添加验证中间件
+            //添加授权中间件
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
